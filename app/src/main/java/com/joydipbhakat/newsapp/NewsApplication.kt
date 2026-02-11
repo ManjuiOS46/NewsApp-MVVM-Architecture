@@ -2,7 +2,7 @@ package com.joydipbhakat.newsapp
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
+import com.joydipbhakat.newsapp.di.ApplicationContext
 import com.joydipbhakat.newsapp.di.component.ApplicationComponent
 import com.joydipbhakat.newsapp.di.component.DaggerApplicationComponent
 import com.joydipbhakat.newsapp.di.module.ApplicationModule
@@ -12,6 +12,7 @@ class NewsApplication : Application() {
     lateinit var applicationComponent: ApplicationComponent
 
     @Inject
+    @ApplicationContext
     lateinit var context: Context
     override fun onCreate() {
         inject()

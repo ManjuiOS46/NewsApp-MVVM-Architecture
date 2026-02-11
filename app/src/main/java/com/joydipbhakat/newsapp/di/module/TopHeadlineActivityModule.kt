@@ -1,15 +1,18 @@
 package com.joydipbhakat.newsapp.di.module
 
 import android.content.Context
+import com.joydipbhakat.newsapp.di.ActivityContext
+import com.joydipbhakat.newsapp.ui.TopHeadlineActivity
 import dagger.Module
 import dagger.Provides
 
 
 @Module
-class TopHeadlineActivityModule(private val context: Context) {
+class TopHeadlineActivityModule(private val activity: TopHeadlineActivity) {
 
     @Provides
+    @ActivityContext
     fun provideContext(): Context {
-        return context
+        return activity
     }
 }
