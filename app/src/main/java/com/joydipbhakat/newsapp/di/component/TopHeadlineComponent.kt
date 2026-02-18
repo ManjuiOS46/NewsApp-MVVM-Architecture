@@ -3,7 +3,7 @@ package com.joydipbhakat.newsapp.di.component
 
 import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.module.TopHeadlineActivityModule
-import com.joydipbhakat.newsapp.ui.TopHeadlineActivity
+import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineActivity
 import dagger.Component
 
 @ActivityScope

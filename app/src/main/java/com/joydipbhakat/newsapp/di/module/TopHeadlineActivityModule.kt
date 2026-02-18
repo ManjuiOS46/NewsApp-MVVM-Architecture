@@ -2,8 +2,8 @@ package com.joydipbhakat.newsapp.di.module
 
 import android.content.Context
 import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.ui.TopHeadlineActivity
-import com.joydipbhakat.newsapp.ui.TopHeadlineAdapter
+import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineActivity
+import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
 import dagger.Module
 import dagger.Provides
 

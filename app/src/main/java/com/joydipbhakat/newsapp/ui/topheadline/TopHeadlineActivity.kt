@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.topheadline
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +11,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.joydipbhakat.newsapp.NewsApplication
-import com.joydipbhakat.newsapp.databinding.ActivityMainBinding
+import com.joydipbhakat.newsapp.databinding.ActivityTopheadlineBinding
 import com.joydipbhakat.newsapp.di.ActivityContext
 import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.component.DaggerTopHeadlineComponent
 import com.joydipbhakat.newsapp.di.component.TopHeadlineComponent
 import com.joydipbhakat.newsapp.di.module.TopHeadlineActivityModule
+import com.joydipbhakat.newsapp.ui.UIState
+import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,17 +32,17 @@ class TopHeadlineActivity : AppCompatActivity() {
     lateinit var context: Context
 
     @Inject
-    lateinit var viewModelFactory: TopHeadlineViewModelFactory
+    lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
     lateinit var topHeadlineAdapter: TopHeadlineAdapter
 
     private lateinit var topHeadlineViewModel: TopHeadlineViewModel
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityTopheadlineBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityTopheadlineBinding.inflate(layoutInflater)
         setContentView(binding.root)
         topHeadlineViewModel =
             ViewModelProvider(this, viewModelFactory)[TopHeadlineViewModel::class.java]

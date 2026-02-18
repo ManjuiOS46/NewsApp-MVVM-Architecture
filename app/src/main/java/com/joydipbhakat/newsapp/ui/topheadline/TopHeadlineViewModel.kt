@@ -1,13 +1,12 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.topheadline
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
+import com.joydipbhakat.newsapp.ui.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
