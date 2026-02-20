@@ -24,6 +24,9 @@
         <activity
             android:name=".ui.topheadline.TopHeadlineActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.NewsSourcesActivity"
+            android:exported="false" />
 
     </application>
 

@@ -16,5 +16,9 @@ class MainActivity : AppCompatActivity() {
         binding.topHeadlines.setOnClickListener {
             startActivity(Intent(this, TopHeadlineActivity::class.java))
         }
+
+        binding.newsSources.setOnClickListener {
+            startActivity(Intent(this, NewsSourcesActivity::class.java))
+        }
     }
 }

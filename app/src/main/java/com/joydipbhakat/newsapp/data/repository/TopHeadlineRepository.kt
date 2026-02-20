@@ -2,6 +2,7 @@ package com.joydipbhakat.newsapp.data.repository
 
 import com.joydipbhakat.newsapp.data.api.NetworkService
 import com.joydipbhakat.newsapp.data.models.Articles
+import com.joydipbhakat.newsapp.data.models.NewsSources
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.Flow
@@ -14,5 +15,11 @@ class TopHeadlineRepository @Inject constructor(private val networkService: Netw
         return flow {
             emit(networkService.getTopHeadline(country))
         }.map { it.articles }
+    }
+
+    suspend fun getNewsSources(): Flow<List<NewsSources>> {
+        return flow {
+            emit(networkService.getNewsSources())
+        }.map { it.sources }
     }
 }

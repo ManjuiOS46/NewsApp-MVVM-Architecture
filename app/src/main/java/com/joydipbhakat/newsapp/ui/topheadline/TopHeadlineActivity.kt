@@ -17,7 +17,6 @@ import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.component.DaggerTopHeadlineComponent
 import com.joydipbhakat.newsapp.di.component.TopHeadlineComponent
 import com.joydipbhakat.newsapp.di.module.TopHeadlineActivityModule
-import com.joydipbhakat.newsapp.ui.UIState
 import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,12 +59,9 @@ class TopHeadlineActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 topHeadlineViewModel.uiState.collect {
                     when (it) {
-                        is UIState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
                         is UIState.Success -> {
                             binding.progressBar.visibility = View.GONE
-                            topHeadlineAdapter.addData(it.list)
+                            topHeadlineAdapter.addData(it.data)
                         }
                         is UIState.Error -> {
                             binding.progressBar.visibility = View.GONE
@@ -73,6 +69,10 @@ class TopHeadlineActivity : AppCompatActivity() {
                                 .show()
 
                         }
+                        UIState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        else -> {}
                     }
                 }
             }

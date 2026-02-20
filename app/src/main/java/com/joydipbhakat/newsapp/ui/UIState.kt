@@ -1,10 +1,8 @@
-package com.joydipbhakat.newsapp.ui
+sealed class UIState<out T> {
 
-import com.joydipbhakat.newsapp.data.models.Articles
+    data class Success<T>(val data: T) : UIState<T>()
 
-sealed class UIState {
-    data class Success(val list: List<Articles>) : UIState()
-    data class Error(val message: String) : UIState()
-    object Loading : UIState()
+    data class Error(val message: String) : UIState<Nothing>()
 
+    object Loading : UIState<Nothing>()
 }

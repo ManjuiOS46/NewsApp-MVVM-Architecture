@@ -11,8 +11,18 @@ class ViewModelFactory @Inject constructor(private val topHeadlineRepository: To
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return TopHeadlineViewModel(topHeadlineRepository) as T
+        if (modelClass.isAssignableFrom(TopHeadlineViewModel::class.java)) {
+            return TopHeadlineViewModel(topHeadlineRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(NewsSourcesViewModel::class.java)) {
+            return NewsSourcesViewModel(topHeadlineRepository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
+
     }
+
 
 
 }
