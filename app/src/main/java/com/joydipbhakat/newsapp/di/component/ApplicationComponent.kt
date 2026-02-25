@@ -1,5 +1,6 @@
 package com.joydipbhakat.newsapp.di.component
 
+import com.google.gson.Gson
 import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import com.joydipbhakat.newsapp.di.module.ApplicationModule
@@ -11,4 +12,5 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(application: NewsApplication)
     fun topHeadlineRepository(): TopHeadlineRepository
+    fun gson():Gson
 }

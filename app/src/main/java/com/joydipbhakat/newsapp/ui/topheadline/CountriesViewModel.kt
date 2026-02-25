@@ -1,6 +1,5 @@
 package com.joydipbhakat.newsapp.ui.topheadline
 
-
 import UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,29 +10,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TopHeadlineViewModel @Inject constructor(private val topHeadlineRepository: TopHeadlineRepository) :
+
+class CountriesViewModel @Inject constructor(var topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
 
     private var _uiState = MutableStateFlow<UIState<List<Articles>>>(UIState.Loading)
     val uiState: StateFlow<UIState<List<Articles>>> = _uiState
 
-    init {
-        fetchNews()
-    }
-
-
-    private fun fetchNews() {
+    fun getTopHeadlinesBasedOnCountry(code: String) {
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {
-                topHeadlineRepository.getTopHeadline("US")
-                    .collect { articles ->
-                        _uiState.value = UIState.Success(articles)
-                    }
-            } catch (e: Exception) {
-                _uiState.value = UIState.Error("Error occurred due to some reason")
+                topHeadlineRepository.getTopHeadline(code).collect {
+                    _uiState.value = UIState.Success(it)
+                }
+            } catch (e: java.lang.Exception) {
+                _uiState.value = UIState.Error("Error occurred while obtaining required data")
             }
         }
     }
-
 }

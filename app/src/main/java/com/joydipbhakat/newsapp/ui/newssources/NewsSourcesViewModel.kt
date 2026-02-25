@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.newssources
 
 import UIState
 import androidx.lifecycle.ViewModel

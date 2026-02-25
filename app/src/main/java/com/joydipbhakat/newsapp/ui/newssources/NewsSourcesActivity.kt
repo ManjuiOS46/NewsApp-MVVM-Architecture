@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.newssources
 
 import UIState
 import android.content.Context
@@ -18,6 +18,7 @@ import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.component.DaggerNewsSourcesComponent
 import com.joydipbhakat.newsapp.di.component.NewsSourcesComponent
 import com.joydipbhakat.newsapp.di.module.NewsSourcesActivityModule
+import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

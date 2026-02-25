@@ -25,9 +25,13 @@
             android:name=".ui.topheadline.TopHeadlineActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.NewsSourcesActivity"
+            android:name=".ui.newssources.NewsSourcesActivity"
             android:exported="false" />
+        <activity android:name=".ui.CountriesActivity"
+            android:exported="true"/>
 
+        <activity android:name=".ui.NewsListActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

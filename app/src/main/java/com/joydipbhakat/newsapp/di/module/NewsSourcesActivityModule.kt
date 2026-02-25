@@ -2,8 +2,8 @@ package com.joydipbhakat.newsapp.di.module
 
 import android.content.Context
 import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.ui.NewsSourcesActivity
-import com.joydipbhakat.newsapp.ui.NewsSourcesAdapter
+import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesActivity
+import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesAdapter
 import dagger.Module
 import dagger.Provides
 
@@ -18,7 +18,7 @@ class NewsSourcesActivityModule(private val activity: NewsSourcesActivity) {
     }
 
     @Provides
-    fun provideAdapter():NewsSourcesAdapter{
+    fun provideAdapter(): NewsSourcesAdapter {
         return NewsSourcesAdapter()
     }
 }

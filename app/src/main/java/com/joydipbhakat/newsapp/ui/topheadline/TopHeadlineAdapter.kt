@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.databinding.TopheadlineItemBinding
+import javax.inject.Inject
 
-class TopHeadlineAdapter :
+class TopHeadlineAdapter @Inject constructor():
     RecyclerView.Adapter<TopHeadlineAdapter.TopHeadlineViewHolder>() {
     private val arrayList = ArrayList<Articles>()
 

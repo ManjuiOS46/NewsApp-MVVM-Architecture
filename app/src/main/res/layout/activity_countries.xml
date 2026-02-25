@@ -4,31 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.newssources.NewsSourcesActivity">
+    tools:context=".ui.CountriesActivity">
 
     <TextView
-        android:id="@+id/news_sources_text_view"
+        android:id="@+id/countries_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/news_sources"
+        android:text="@string/countries"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_sources_recycler_view"
+        android:id="@+id/countries_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/news_sources_text_view"
-        tools:listitem="@layout/newssources_item" />
+        app:layout_constraintTop_toBottomOf="@id/countries_text_view"
+        tools:listitem="@layout/countries_item" />
 
     <ProgressBar
-        android:id="@+id/news_sources_progress_bar"
+        android:id="@+id/countries_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

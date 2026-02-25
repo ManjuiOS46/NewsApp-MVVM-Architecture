@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.newssources
 
 import android.net.Uri
 import android.view.LayoutInflater
