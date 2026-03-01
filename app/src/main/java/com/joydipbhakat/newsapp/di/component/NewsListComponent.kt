@@ -2,7 +2,7 @@ package com.joydipbhakat.newsapp.di.component
 
 import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.module.NewsListActivityModule
-import com.joydipbhakat.newsapp.ui.NewsListActivity
+import com.joydipbhakat.newsapp.ui.newslist.NewsListActivity
 import dagger.Component
 
 @ActivityScope

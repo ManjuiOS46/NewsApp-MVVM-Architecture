@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.joydipbhakat.newsapp.databinding.ActivityMainBinding
+import com.joydipbhakat.newsapp.ui.language.LanguageActivity
+import com.joydipbhakat.newsapp.ui.countries.CountriesActivity
 import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesActivity
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineActivity
 
@@ -23,7 +25,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.countries.setOnClickListener {
-            startActivity(Intent(this,CountriesActivity::class.java))
+            startActivity(Intent(this, CountriesActivity::class.java))
+        }
+
+        binding.languages.setOnClickListener {
+            startActivity(Intent(this, LanguageActivity::class.java))
         }
     }
 }

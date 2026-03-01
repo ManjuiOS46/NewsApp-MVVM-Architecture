@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.countries
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -20,4 +20,8 @@ interface NetworkService {
     @Headers("X-Api-Key: ${AppUtils.API_KEY}", "User-Agent:ABC")
     @GET("top-headlines/sources")
     suspend fun getNewsSources():NewsSourcesResponse
+
+    @Headers("X-Api-Key: ${AppUtils.API_KEY}", "User-Agent:ABC")
+    @GET("top-headlines")
+    suspend fun getLanguage(@Query("language") language: String): TopHeadlineResponse
 }

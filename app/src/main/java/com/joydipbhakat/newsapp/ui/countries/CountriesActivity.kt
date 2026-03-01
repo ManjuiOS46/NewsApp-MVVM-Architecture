@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.ui
+package com.joydipbhakat.newsapp.ui.countries
 
 import android.content.Context
 import android.content.Intent
@@ -16,6 +16,7 @@ import com.joydipbhakat.newsapp.di.ActivityScope
 import com.joydipbhakat.newsapp.di.component.CountriesComponent
 import com.joydipbhakat.newsapp.di.component.DaggerCountriesComponent
 import com.joydipbhakat.newsapp.di.module.CountriesActivityModule
+import com.joydipbhakat.newsapp.ui.newslist.NewsListActivity
 import javax.inject.Inject
 
 class CountriesActivity : AppCompatActivity() {
@@ -40,7 +41,6 @@ class CountriesActivity : AppCompatActivity() {
         inject()
         binding = ActivityCountriesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loadJson()
         setUpData()
         setUpUI()
     }

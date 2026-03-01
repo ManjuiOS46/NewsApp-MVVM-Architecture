@@ -9,6 +9,7 @@ import com.joydipbhakat.newsapp.di.BaseUrl
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -30,7 +31,18 @@ class ApplicationModule(private val application: NewsApplication) {
     }
 
     @Provides
-    fun provideOkHttp(): OkHttpClient = OkHttpClient()
+    @Singleton
+    fun provideOkHttp(): OkHttpClient {
+
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+    }
+
 
     @Provides
     @Singleton
@@ -50,8 +62,5 @@ class ApplicationModule(private val application: NewsApplication) {
                .baseUrl(baseUrl)
                .addConverterFactory(GsonConverterFactory.create(gson))
                .build().create(NetworkService::class.java)
-
-
-
 
 }
