@@ -7,6 +7,7 @@ import com.joydipbhakat.newsapp.databinding.ActivityMainBinding
 import com.joydipbhakat.newsapp.ui.language.LanguageActivity
 import com.joydipbhakat.newsapp.ui.countries.CountriesActivity
 import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesActivity
+import com.joydipbhakat.newsapp.ui.search.SearchActivity
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineActivity
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.languages.setOnClickListener {
             startActivity(Intent(this, LanguageActivity::class.java))
+        }
+
+        binding.search.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
         }
     }
 }

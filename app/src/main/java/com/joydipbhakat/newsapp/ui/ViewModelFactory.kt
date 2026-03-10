@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import com.joydipbhakat.newsapp.ui.newslist.NewsListViewModel
 import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesViewModel
+import com.joydipbhakat.newsapp.ui.search.SearchViewModel
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineViewModel
 import javax.inject.Inject
 
@@ -23,6 +24,10 @@ class ViewModelFactory @Inject constructor(private val topHeadlineRepository: To
 
         if (modelClass.isAssignableFrom(NewsListViewModel::class.java)) {
             return NewsListViewModel(topHeadlineRepository) as T
+        }
+
+        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            return SearchViewModel(topHeadlineRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")
