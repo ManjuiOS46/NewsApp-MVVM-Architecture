@@ -22,7 +22,7 @@ class TopHeadlineViewModel @Inject constructor(private val topHeadlineRepository
     }
 
 
-    private fun fetchNews() {
+     fun fetchNews() {
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {

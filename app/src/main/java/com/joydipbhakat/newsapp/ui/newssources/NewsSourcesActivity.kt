@@ -3,14 +3,12 @@ package com.joydipbhakat.newsapp.ui.newssources
 import UIState
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.joydipbhakat.newsapp.BaseActivity
 import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.databinding.ActivityNewssourcesBinding
 import com.joydipbhakat.newsapp.di.ActivityContext
@@ -22,7 +20,7 @@ import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsSourcesActivity : AppCompatActivity() {
+class NewsSourcesActivity : BaseActivity() {
     @ActivityScope
     private lateinit var newsSourcesComponent: NewsSourcesComponent
 
@@ -48,6 +46,9 @@ class NewsSourcesActivity : AppCompatActivity() {
         newsSourcesViewModel =
             ViewModelProvider(this, viewModelFactory)[NewsSourcesViewModel::class.java]
         setUpUI()
+        binding.errorLayout.retryButton.setOnClickListener {
+            newsSourcesViewModel.fetchNewsSources()
+        }
         setUpObserver()
     }
 
@@ -62,19 +63,18 @@ class NewsSourcesActivity : AppCompatActivity() {
                 newsSourcesViewModel.uiState.collect {
                     when (it) {
                         is UIState.Success -> {
-                            binding.newsSourcesProgressBar.visibility = View.GONE
+                            showSuccess(binding.newsSourcesProgressBar, binding.errorLayout.root)
                             newsSourcesAdapter.addData(it.data)
                         }
-                        is UIState.Error -> {
-                            binding.newsSourcesProgressBar.visibility = View.GONE
-                            Toast.makeText(this@NewsSourcesActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        UIState.Loading -> {
-                            binding.newsSourcesProgressBar.visibility = View.VISIBLE
-                        }
+                        is UIState.Error -> showError(
+                            binding.newsSourcesProgressBar,
+                            binding.errorLayout.root
+                        )
+                        UIState.Loading -> showLoading(
+                            binding.newsSourcesProgressBar,
+                            binding.errorLayout.root
+                        )
                         else -> {
-
                         }
                     }
                 }

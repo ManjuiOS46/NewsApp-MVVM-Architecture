@@ -3,15 +3,13 @@ package com.joydipbhakat.newsapp.ui.search
 import UIState
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.joydipbhakat.newsapp.BaseActivity
 import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.databinding.ActivitySearchBinding
 import com.joydipbhakat.newsapp.di.ActivityScope
@@ -23,7 +21,7 @@ import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     @ActivityScope
     lateinit var searchComponent: SearchComponent
@@ -52,6 +50,11 @@ class SearchActivity : AppCompatActivity() {
                 searchViewModel.newsSearch(it.toString())
             }
         }
+        binding.errorLayout.retryButton.setOnClickListener {
+            val textPresentOnSearchBar = binding.searchViewEditText.text.toString()
+            if (textPresentOnSearchBar.isNotEmpty())
+                searchViewModel.newsSearch(textPresentOnSearchBar)
+        }
         setUpUi()
         setUpObserver()
     }
@@ -70,19 +73,19 @@ class SearchActivity : AppCompatActivity() {
                 searchViewModel.uiState.collect {
                     when (it) {
                         is UIState.Success -> {
-                            binding.searchProgressBar.visibility = View.GONE
-                            it.data.collect{it1->
+                            showSuccess(binding.searchProgressBar, binding.errorLayout.root)
+                            it.data.collect { it1 ->
                                 adapter.addData(it1)
                             }
                         }
-                        is UIState.Error -> {
-                            binding.searchProgressBar.visibility = View.GONE
-                            Toast.makeText(this@SearchActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        is UIState.Loading -> {
-                            binding.searchProgressBar.visibility = View.VISIBLE
-                        }
+                        is UIState.Error -> showError(
+                            binding.searchProgressBar,
+                            binding.errorLayout.root
+                        )
+                        is UIState.Loading -> showLoading(
+                            binding.searchProgressBar,
+                            binding.errorLayout.root
+                        )
                         else -> {}
                     }
                 }

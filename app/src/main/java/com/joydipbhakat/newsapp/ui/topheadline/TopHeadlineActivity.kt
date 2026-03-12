@@ -1,15 +1,13 @@
 package com.joydipbhakat.newsapp.ui.topheadline
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.joydipbhakat.newsapp.BaseActivity
 import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.databinding.ActivityTopheadlineBinding
 import com.joydipbhakat.newsapp.di.ActivityContext
@@ -21,7 +19,7 @@ import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TopHeadlineActivity : AppCompatActivity() {
+class TopHeadlineActivity : BaseActivity() {
 
     @ActivityScope
     private lateinit var topHeadlineComponent: TopHeadlineComponent
@@ -45,6 +43,9 @@ class TopHeadlineActivity : AppCompatActivity() {
         setContentView(binding.root)
         topHeadlineViewModel =
             ViewModelProvider(this, viewModelFactory)[TopHeadlineViewModel::class.java]
+        binding.errorLayout.retryButton.setOnClickListener {
+            topHeadlineViewModel.fetchNews()
+        }
         setupUI()
         setupObserver()
     }
@@ -60,17 +61,15 @@ class TopHeadlineActivity : AppCompatActivity() {
                 topHeadlineViewModel.uiState.collect {
                     when (it) {
                         is UIState.Success -> {
-                            binding.progressBar.visibility = View.GONE
+                            showSuccess(binding.progressBar,binding.errorLayout.root)
                             topHeadlineAdapter.addData(it.data)
                         }
                         is UIState.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@TopHeadlineActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
+                            showError(binding.progressBar,binding.errorLayout.root)
 
                         }
                         UIState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            showLoading(binding.progressBar,binding.errorLayout.root)
                         }
                         else -> {}
                     }

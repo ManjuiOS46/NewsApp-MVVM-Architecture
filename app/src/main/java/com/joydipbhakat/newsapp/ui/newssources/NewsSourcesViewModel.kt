@@ -21,7 +21,7 @@ class NewsSourcesViewModel @Inject constructor(private var topHeadlineRepository
         fetchNewsSources()
     }
 
-    private fun fetchNewsSources() {
+    fun fetchNewsSources() {
         viewModelScope.launch {
             _uiState.value = UIState.Loading
             try {

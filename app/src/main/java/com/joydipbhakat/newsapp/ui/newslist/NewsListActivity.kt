@@ -5,12 +5,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.joydipbhakat.newsapp.BaseActivity
 import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.models.NewsInfo
 import com.joydipbhakat.newsapp.databinding.ActivityNewslistBinding
@@ -23,7 +23,7 @@ import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsListActivity : AppCompatActivity() {
+class NewsListActivity : BaseActivity() {
 
     @ActivityScope
     lateinit var newsListComponent: NewsListComponent
@@ -56,6 +56,13 @@ class NewsListActivity : AppCompatActivity() {
         } else {
             newsInfo?.let { newsListViewModel.getTopHeadlinesBasedOnCountry(it.code)
             setUpObserverForCountry()
+            }
+        }
+        binding.errorLayout.retryButton.setOnClickListener {
+            if (newsInfo?.source == "Language") {
+                newsListViewModel.getNewsBasedOnLanguage(newsInfo.code)
+            } else {
+                newsInfo?.code?.let { it1 -> newsListViewModel.getTopHeadlinesBasedOnCountry(it1) }
             }
         }
     }
@@ -96,18 +103,11 @@ class NewsListActivity : AppCompatActivity() {
                 newsListViewModel.uiStateForLanguage.collect {
                     when (it) {
                         is UIState.Success -> {
-                            binding.newsListProgressBar.visibility = View.GONE
+                            showSuccess(binding.newsListProgressBar, binding.errorLayout.root)
                             topHeadlineAdapter.addData(it.data)
                         }
-                        is UIState.Error -> {
-                            binding.newsListProgressBar.visibility = View.GONE
-                            Toast.makeText(this@NewsListActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        is UIState.Loading -> {
-                            binding.newsListProgressBar.visibility = View.VISIBLE
-
-                        }
+                        is UIState.Error -> showError(binding.newsListProgressBar, binding.errorLayout.root)
+                        is UIState.Loading -> showLoading(binding.newsListProgressBar, binding.errorLayout.root)
                         else -> {}
                     }
                 }
