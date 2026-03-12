@@ -6,10 +6,10 @@ import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.api.NetworkService
 import com.joydipbhakat.newsapp.di.ApplicationContext
 import com.joydipbhakat.newsapp.di.BaseUrl
+import com.joydipbhakat.newsapp.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -34,12 +34,8 @@ class ApplicationModule(private val application: NewsApplication) {
     @Singleton
     fun provideOkHttp(): OkHttpClient {
 
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-
         return OkHttpClient.Builder()
-            .addInterceptor(logging)
+            .addInterceptor(ApiKeyInterceptor())
             .build()
     }
 
