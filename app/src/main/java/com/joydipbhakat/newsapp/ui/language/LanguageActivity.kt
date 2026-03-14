@@ -53,18 +53,20 @@ class LanguageActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpData(){
+    private fun setUpData() {
         val jsonString = loadJSON()
         val type = object : TypeToken<Map<String, String>>() {}.type
         val languageMap: Map<String, String> = gson.fromJson(jsonString, type)
         val languageList = languageMap.toList()
         languageAdapter.addData(languageList.map { it.second })
-        languageAdapter.setItemClickListener { selectedLanguage ->
-            val languageKey = languageList.find { it.second == selectedLanguage }?.first
+        languageAdapter.setItemClickListener { firsLanguage, secondLanguage ->
+            val firstLanguageSelected = languageList.find { it.second == firsLanguage }?.first
+            val secondLanguageSelected = languageList.find { it.second == secondLanguage}?.first
             val newsInfo = NewsInfo(
                 "Language",
-                selectedLanguage,
-                languageKey.toString()
+                null,
+                firstLanguageSelected.toString(),
+                secondLanguageSelected.toString()
             )
             val intent = Intent(context, NewsListActivity::class.java)
             intent.putExtra("news_info", newsInfo)

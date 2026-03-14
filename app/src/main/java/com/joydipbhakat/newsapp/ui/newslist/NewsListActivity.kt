@@ -51,18 +51,18 @@ class NewsListActivity : BaseActivity() {
             ViewModelProvider(this, viewModelFactory)[NewsListViewModel::class.java]
         setUpUi()
         if (newsInfo?.source == "Language") {
-            newsInfo.let { newsListViewModel.getNewsBasedOnLanguage(it.code)
+            newsInfo.let { newsListViewModel.getNewsBasedOnLanguage(it.firstLanguage.toString(),it.secondLanguage.toString())
             setUpObserverForLanguage()}
         } else {
-            newsInfo?.let { newsListViewModel.getTopHeadlinesBasedOnCountry(it.code)
+            newsInfo?.let { newsListViewModel.getTopHeadlinesBasedOnCountry(it.countryCode.toString())
             setUpObserverForCountry()
             }
         }
         binding.errorLayout.retryButton.setOnClickListener {
             if (newsInfo?.source == "Language") {
-                newsListViewModel.getNewsBasedOnLanguage(newsInfo.code)
+                newsListViewModel.getNewsBasedOnLanguage(newsInfo.firstLanguage.toString(),newsInfo.secondLanguage.toString())
             } else {
-                newsInfo?.code?.let { it1 -> newsListViewModel.getTopHeadlinesBasedOnCountry(it1) }
+                newsInfo?.countryCode?.let { it1 -> newsListViewModel.getTopHeadlinesBasedOnCountry(it1) }
             }
         }
     }

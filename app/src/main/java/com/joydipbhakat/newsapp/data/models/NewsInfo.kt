@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class NewsInfo(
     val source:String,
-    val name:String,
-    val code:String
+    val countryCode:String?,
+    val firstLanguage:String?,
+    val secondLanguage:String?
 ):Parcelable

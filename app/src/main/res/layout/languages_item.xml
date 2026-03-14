@@ -5,6 +5,16 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/languages_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/check"
+        android:visibility="gone"
+        app:layout_constraintRight_toLeftOf="@+id/languages_item_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/languages_item_button"
         android:layout_width="250dp"

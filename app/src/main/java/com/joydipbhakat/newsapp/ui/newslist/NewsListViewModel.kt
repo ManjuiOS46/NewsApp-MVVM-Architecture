@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,17 +33,24 @@ class NewsListViewModel @Inject constructor(var topHeadlineRepository: TopHeadli
         }
     }
 
-    fun getNewsBasedOnLanguage(code: String) {
+    fun getNewsBasedOnLanguage(firstLanguage: String, secondLanguage: String) {
         viewModelScope.launch {
             _uiStateForLanguage.value = UIState.Loading
-            try {
-                topHeadlineRepository.getLanguageNews(code).collect {
+            topHeadlineRepository.getLanguageNews(firstLanguage)
+                .zip(topHeadlineRepository.getLanguageNews(secondLanguage))
+                { resultFromFirst, resultFromSecond ->
+                    val allLanguagesFromAPI = mutableListOf<Articles>()
+                    allLanguagesFromAPI.addAll(resultFromFirst)
+                    allLanguagesFromAPI.addAll(resultFromSecond)
+                    return@zip allLanguagesFromAPI
+                }
+                .catch { e ->
+                    _uiStateForLanguage.value = UIState.Error(e.toString())
+                }
+                .flowOn(Dispatchers.IO)
+                .collect {
                     _uiStateForLanguage.value = UIState.Success(it)
                 }
-            } catch (e: Exception) {
-                _uiStateForLanguage.value =
-                    UIState.Error("Error occurred while obtaining for language")
-            }
         }
     }
 }

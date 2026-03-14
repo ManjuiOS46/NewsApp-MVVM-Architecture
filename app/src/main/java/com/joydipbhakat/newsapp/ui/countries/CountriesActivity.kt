@@ -64,8 +64,9 @@ class CountriesActivity : AppCompatActivity() {
         adapter.setItemClickListener {
             val newsInfo = NewsInfo(
                 "Countries",
-                it.name,
-                it.code
+                it.code,
+                null,
+                null
             )
             val intent = Intent(context, NewsListActivity::class.java)
             intent.putExtra("news_info", newsInfo)
