@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(val topHeadlineRepository: TopHeadlineRepository) :
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow<UIState<Flow<List<Articles>>>>(UIState.Loading)

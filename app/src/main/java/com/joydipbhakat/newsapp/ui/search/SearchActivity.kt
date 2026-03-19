@@ -3,48 +3,38 @@ package com.joydipbhakat.newsapp.ui.search
 import UIState
 import android.content.Context
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.joydipbhakat.newsapp.BaseActivity
-import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.databinding.ActivitySearchBinding
-import com.joydipbhakat.newsapp.di.ActivityScope
-import com.joydipbhakat.newsapp.di.component.DaggerSearchComponent
-import com.joydipbhakat.newsapp.di.component.SearchComponent
-import com.joydipbhakat.newsapp.di.module.SearchActivityModule
-import com.joydipbhakat.newsapp.ui.ViewModelFactory
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchActivity : BaseActivity() {
 
-    @ActivityScope
-    lateinit var searchComponent: SearchComponent
-
     @Inject
+    @ActivityContext
     lateinit var context: Context
 
     @Inject
     lateinit var adapter: TopHeadlineAdapter
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels()
 
     lateinit var binding: ActivitySearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectDependencies()
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        searchViewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
         binding.searchViewEditText.addTextChangedListener {
             if (it?.isNotEmpty() == true) {
                 searchViewModel.newsSearch(it.toString())
@@ -91,13 +81,5 @@ class SearchActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    private fun injectDependencies() {
-        searchComponent = DaggerSearchComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .searchActivityModule(SearchActivityModule(this)).build()
-
-        searchComponent.inject(this)
     }
 }

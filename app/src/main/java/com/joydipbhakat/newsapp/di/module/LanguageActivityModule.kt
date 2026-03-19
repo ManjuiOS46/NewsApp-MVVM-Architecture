@@ -1,21 +1,14 @@
 package com.joydipbhakat.newsapp.di.module
 
-import android.content.Context
-import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.ui.language.LanguageActivity
 import com.joydipbhakat.newsapp.ui.language.LanguageAdapter
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 
 @Module
-class LanguageActivityModule(val languageActivity: LanguageActivity) {
-
-    @Provides
-    @ActivityContext
-    fun provideContext():Context{
-        return languageActivity
-    }
-
+@InstallIn(ActivityComponent::class)
+class LanguageActivityModule {
     @Provides
     fun provideAdapter(): LanguageAdapter {
         return LanguageAdapter()

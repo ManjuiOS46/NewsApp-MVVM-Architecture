@@ -1,21 +1,15 @@
 package com.joydipbhakat.newsapp.di.module
 
-import android.content.Context
-import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.ui.countries.CountriesActivity
 import com.joydipbhakat.newsapp.ui.countries.CountriesAdapter
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+
 
 @Module
-class CountriesActivityModule(private val countriesActivity: CountriesActivity) {
-
-    @Provides
-    @ActivityContext
-    fun providesContext():Context {
-        return countriesActivity
-    }
-
+@InstallIn(ActivityComponent::class)
+class CountriesActivityModule {
     @Provides
     fun provideAdapter(): CountriesAdapter {
         return CountriesAdapter()

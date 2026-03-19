@@ -1,14 +1,13 @@
 package com.joydipbhakat.newsapp.di.module
 
-import android.content.Context
 import com.google.gson.Gson
-import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.api.NetworkService
-import com.joydipbhakat.newsapp.di.ApplicationContext
 import com.joydipbhakat.newsapp.di.BaseUrl
 import com.joydipbhakat.newsapp.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,13 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: NewsApplication) {
-
-    @Provides
-    @ApplicationContext
-    fun provideContext(): Context {
-        return application
-    }
+@InstallIn(SingletonComponent::class)
+class ApplicationModule {
 
     @Provides
     @BaseUrl

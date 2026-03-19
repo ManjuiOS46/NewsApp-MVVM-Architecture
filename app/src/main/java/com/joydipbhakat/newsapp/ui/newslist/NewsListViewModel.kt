@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
+@HiltViewModel
 class NewsListViewModel @Inject constructor(var topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
 

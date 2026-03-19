@@ -7,21 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.models.NewsInfo
 import com.joydipbhakat.newsapp.databinding.ActivityLanguageBinding
-import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.di.ActivityScope
-import com.joydipbhakat.newsapp.di.component.DaggerLanguageComponent
-import com.joydipbhakat.newsapp.di.component.LanguageComponent
-import com.joydipbhakat.newsapp.di.module.LanguageActivityModule
 import com.joydipbhakat.newsapp.ui.newslist.NewsListActivity
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LanguageActivity : AppCompatActivity() {
-
-    @ActivityScope
-    lateinit var languageComponent: LanguageComponent
 
     @Inject
     @ActivityContext
@@ -37,7 +31,6 @@ class LanguageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectDependencies()
         binding = ActivityLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpData()
@@ -81,10 +74,4 @@ class LanguageActivity : AppCompatActivity() {
         binding.languageRecyclerView.adapter = languageAdapter
     }
 
-    private fun injectDependencies() {
-        languageComponent = DaggerLanguageComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .languageActivityModule(LanguageActivityModule(this)).build()
-        languageComponent.inject(this)
-    }
 }

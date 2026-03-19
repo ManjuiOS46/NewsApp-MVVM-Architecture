@@ -7,22 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.joydipbhakat.newsapp.NewsApplication
 import com.joydipbhakat.newsapp.data.models.Countries
 import com.joydipbhakat.newsapp.data.models.NewsInfo
 import com.joydipbhakat.newsapp.databinding.ActivityCountriesBinding
-import com.joydipbhakat.newsapp.di.ActivityContext
-import com.joydipbhakat.newsapp.di.ActivityScope
-import com.joydipbhakat.newsapp.di.component.CountriesComponent
-import com.joydipbhakat.newsapp.di.component.DaggerCountriesComponent
-import com.joydipbhakat.newsapp.di.module.CountriesActivityModule
 import com.joydipbhakat.newsapp.ui.newslist.NewsListActivity
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CountriesActivity : AppCompatActivity() {
-
-    @ActivityScope
-    private lateinit var countriesComponent: CountriesComponent
 
     @ActivityContext
     @Inject
@@ -38,7 +32,6 @@ class CountriesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        inject()
         binding = ActivityCountriesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpData()
@@ -72,16 +65,5 @@ class CountriesActivity : AppCompatActivity() {
             intent.putExtra("news_info", newsInfo)
             startActivity(intent)
         }
-    }
-
-
-    fun inject() {
-        countriesComponent = DaggerCountriesComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .countriesActivityModule(CountriesActivityModule(this))
-            .build()
-
-
-        countriesComponent.inject(this)
     }
 }
