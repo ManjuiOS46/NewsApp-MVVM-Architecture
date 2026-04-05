@@ -1,85 +1,83 @@
 package com.joydipbhakat.newsapp.ui.search
 
-import UIState
-import android.content.Context
+import com.joydipbhakat.newsapp.ui.UIState
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.joydipbhakat.newsapp.BaseActivity
-import com.joydipbhakat.newsapp.databinding.ActivitySearchBinding
-import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.joydipbhakat.newsapp.R
+import com.joydipbhakat.newsapp.ui.component.ErrorView
+import com.joydipbhakat.newsapp.ui.component.LoadingView
+import com.joydipbhakat.newsapp.ui.component.NewsListView
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchActivity : BaseActivity() {
-
-    @Inject
-    @ActivityContext
-    lateinit var context: Context
-
-    @Inject
-    lateinit var adapter: TopHeadlineAdapter
-
-    private val searchViewModel: SearchViewModel by viewModels()
-
-    lateinit var binding: ActivitySearchBinding
-
+class SearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.searchViewEditText.addTextChangedListener {
-            if (it?.isNotEmpty() == true) {
-                searchViewModel.newsSearch(it.toString())
+        setContent {
+            ShowSearchPage()
+        }
+    }
+}
+
+@Composable
+private fun ShowSearchPage() {
+    var text by remember { mutableStateOf("") }
+    val searchViewModel: SearchViewModel = hiltViewModel()
+    Column {
+        ShowTextField(
+            text = text,
+            onTextChange = { text = it },
+            searchViewModel
+        )
+        SearchScreen(text, searchViewModel)
+    }
+}
+
+@Composable
+private fun SearchScreen(text: String, searchViewModel: SearchViewModel) {
+    when (val uiState = searchViewModel.uiState.collectAsState().value) {
+        is UIState.Success -> {
+            val newsList = uiState.data.collectAsState(initial = emptyList())
+            NewsListView(data = newsList.value)
+        }
+        is UIState.Error -> {
+            ErrorView {
+                searchViewModel.newsSearch(text)
             }
         }
-        binding.errorLayout.retryButton.setOnClickListener {
-            val textPresentOnSearchBar = binding.searchViewEditText.text.toString()
-            if (textPresentOnSearchBar.isNotEmpty())
-                searchViewModel.newsSearch(textPresentOnSearchBar)
-        }
-        setUpUi()
-        setUpObserver()
-    }
-
-    private fun setUpUi() {
-        binding.apply {
-            searchRecyclerView.layoutManager = LinearLayoutManager(this@SearchActivity)
-            searchRecyclerView.adapter = adapter
+        is UIState.Loading -> {
+            LoadingView()
         }
     }
+}
 
-    private fun setUpObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED)
-            {
-                searchViewModel.uiState.collect {
-                    when (it) {
-                        is UIState.Success -> {
-                            showSuccess(binding.searchProgressBar, binding.errorLayout.root)
-                            it.data.collect { it1 ->
-                                adapter.addData(it1)
-                            }
-                        }
-                        is UIState.Error -> showError(
-                            binding.searchProgressBar,
-                            binding.errorLayout.root
-                        )
-                        is UIState.Loading -> showLoading(
-                            binding.searchProgressBar,
-                            binding.errorLayout.root
-                        )
-                        else -> {}
-                    }
-                }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ShowTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
+    searchViewModel: SearchViewModel
+) {
+    TextField(
+        value = text,
+        onValueChange = {
+            onTextChange(it)
+            if (it.isNotEmpty()) {
+                searchViewModel.newsSearch(it)
             }
-        }
-    }
+        },
+        label = { Text(stringResource(R.string.search)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+
+    )
 }

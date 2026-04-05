@@ -1,105 +1,90 @@
 package com.joydipbhakat.newsapp.ui.newslist
 
-import UIState
+import com.joydipbhakat.newsapp.ui.UIState
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.joydipbhakat.newsapp.BaseActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.joydipbhakat.newsapp.data.models.NewsInfo
-import com.joydipbhakat.newsapp.databinding.ActivityNewslistBinding
-import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineAdapter
+import com.joydipbhakat.newsapp.ui.component.ErrorView
+import com.joydipbhakat.newsapp.ui.component.LoadingView
+import com.joydipbhakat.newsapp.ui.component.NewsListView
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
-class NewsListActivity : BaseActivity() {
+class NewsListActivity : ComponentActivity() {
     @Inject
     @ActivityContext
     lateinit var context: Context
 
-    @Inject
-    lateinit var topHeadlineAdapter: TopHeadlineAdapter
-
-    private val newsListViewModel: NewsListViewModel by viewModels()
-
-    private lateinit var binding: ActivityNewslistBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val newsInfo = intent.getParcelableExtra<NewsInfo>("news_info")
-        binding = ActivityNewslistBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setUpUi()
-        if (newsInfo?.source == "Language") {
-            newsInfo.let { newsListViewModel.getNewsBasedOnLanguage(it.firstLanguage.toString(),it.secondLanguage.toString())
-            setUpObserverForLanguage()}
-        } else {
-            newsInfo?.let { newsListViewModel.getTopHeadlinesBasedOnCountry(it.countryCode.toString())
-            setUpObserverForCountry()
-            }
-        }
-        binding.errorLayout.retryButton.setOnClickListener {
-            if (newsInfo?.source == "Language") {
-                newsListViewModel.getNewsBasedOnLanguage(newsInfo.firstLanguage.toString(),newsInfo.secondLanguage.toString())
-            } else {
-                newsInfo?.countryCode?.let { it1 -> newsListViewModel.getTopHeadlinesBasedOnCountry(it1) }
-            }
-        }
-    }
-
-    private fun setUpUi() {
-        binding.newsListRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.newsListRecyclerView.adapter = topHeadlineAdapter
-    }
-
-    private fun setUpObserverForCountry() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsListViewModel.uiStateForCountry.collect {
-                    when (it) {
-                        is UIState.Success -> {
-                            binding.newsListProgressBar.visibility = View.GONE
-                            topHeadlineAdapter.addData(it.data)
-                        }
-                        is UIState.Error -> {
-                            binding.newsListProgressBar.visibility = View.GONE
-                            Toast.makeText(this@NewsListActivity, it.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        is UIState.Loading -> {
-                            binding.newsListProgressBar.visibility = View.VISIBLE
-
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setUpObserverForLanguage() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsListViewModel.uiStateForLanguage.collect {
-                    when (it) {
-                        is UIState.Success -> {
-                            showSuccess(binding.newsListProgressBar, binding.errorLayout.root)
-                            topHeadlineAdapter.addData(it.data)
-                        }
-                        is UIState.Error -> showError(binding.newsListProgressBar, binding.errorLayout.root)
-                        is UIState.Loading -> showLoading(binding.newsListProgressBar, binding.errorLayout.root)
-                        else -> {}
-                    }
-                }
-            }
+        setContent {
+            NewsListScreen(newsInfo = newsInfo)
         }
     }
 }
+
+@Composable
+private fun NewsListScreen(newsInfo: NewsInfo?) {
+    val newsListViewModel: NewsListViewModel = hiltViewModel()
+    if (newsInfo?.source == "Language") {
+        newsInfo.let {
+            newsListViewModel.getNewsBasedOnLanguage(
+                it.firstLanguage.toString(),
+                it.secondLanguage.toString()
+            )
+            NewsForLanguage(newsInfo, newsListViewModel)
+        }
+    } else {
+        newsInfo?.let {
+            newsListViewModel.getTopHeadlinesBasedOnCountry(it.countryCode.toString())
+            NewsForCountries(newsInfo, newsListViewModel)
+        }
+    }
+}
+
+@Composable
+private fun NewsForLanguage(newsInfo: NewsInfo?, newsListViewModel: NewsListViewModel) {
+    when (val uiState = newsListViewModel.uiStateForLanguage.collectAsState().value) {
+        is UIState.Success -> {
+            NewsListView(data = uiState.data)
+        }
+        is UIState.Error -> {
+            ErrorView {
+                newsListViewModel.getNewsBasedOnLanguage(
+                    newsInfo?.firstLanguage.toString(),
+                    newsInfo?.secondLanguage.toString()
+                )
+            }
+        }
+        is UIState.Loading -> {
+            LoadingView()
+        }
+    }
+}
+
+@Composable
+private fun NewsForCountries(newsInfo: NewsInfo?, newsListViewModel: NewsListViewModel) {
+    when (val uiState = newsListViewModel.uiStateForCountry.collectAsState().value) {
+        is UIState.Success -> {
+            NewsListView(data = uiState.data)
+        }
+        is UIState.Error -> {
+            ErrorView {
+                newsInfo?.countryCode?.let { newsListViewModel.getTopHeadlinesBasedOnCountry(it) }
+            }
+        }
+        is UIState.Loading -> {
+            LoadingView()
+        }
+    }
+}
+

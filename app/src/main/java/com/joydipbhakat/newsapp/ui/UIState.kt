@@ -1,3 +1,5 @@
+package com.joydipbhakat.newsapp.ui
+
 sealed class UIState<out T> {
 
     data class Success<T>(val data: T) : UIState<T>()

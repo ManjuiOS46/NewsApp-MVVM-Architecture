@@ -1,11 +1,13 @@
 package com.joydipbhakat.newsapp.ui.search
 
-import UIState
+import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.models.Articles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +30,7 @@ class SearchViewModel @Inject constructor(private val topHeadlineRepository: Top
         _query.value = q
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private fun newsSearchNetworkCall() {
         viewModelScope.launch {
             _query.debounce(500)

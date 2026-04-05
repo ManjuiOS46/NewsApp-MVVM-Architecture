@@ -1,7 +1,7 @@
 package com.joydipbhakat.newsapp.ui.topheadline
 
 
-import UIState
+import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.models.Articles
