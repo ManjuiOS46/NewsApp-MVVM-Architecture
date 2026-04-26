@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.joydipbhakat.newsapp.data.api.NetworkService
 import com.joydipbhakat.newsapp.di.BaseUrl
 import com.joydipbhakat.newsapp.ApiKeyInterceptor
+import com.joydipbhakat.newsapp.utils.DefaultDispatcher
+import com.joydipbhakat.newsapp.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,5 +58,9 @@ class ApplicationModule {
                .baseUrl(baseUrl)
                .addConverterFactory(GsonConverterFactory.create(gson))
                .build().create(NetworkService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDefaultDispatcher():DispatcherProvider = DefaultDispatcher()
 
 }

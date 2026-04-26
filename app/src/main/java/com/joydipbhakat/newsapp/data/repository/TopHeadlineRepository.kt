@@ -13,8 +13,12 @@ import javax.inject.Singleton
 class TopHeadlineRepository @Inject constructor(private val networkService: NetworkService) {
     suspend fun getTopHeadline(country: String): Flow<List<Articles>> {
         return flow {
-            emit(networkService.getTopHeadline(country))
-        }.map { it.articles }
+            try {
+                emit(networkService.getTopHeadline(country).articles)
+            } catch (e: Exception) {
+                emit(emptyList())
+            }
+        }
     }
 
     suspend fun getNewsSources(): Flow<List<NewsSources>> {
