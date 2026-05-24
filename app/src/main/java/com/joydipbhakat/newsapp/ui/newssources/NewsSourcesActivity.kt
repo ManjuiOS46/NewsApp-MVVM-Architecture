@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.joydipbhakat.newsapp.R
 import com.joydipbhakat.newsapp.data.models.NewsSources
-import com.joydipbhakat.newsapp.ui.component.ErrorView
-import com.joydipbhakat.newsapp.ui.component.LoadingView
+import com.joydipbhakat.newsapp.ui.component.ErrorScreen
+import com.joydipbhakat.newsapp.ui.component.LoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -48,12 +48,12 @@ private fun NewsSourcesScreen() {
             NewsSources(uiState.data)
         }
         is UIState.Error -> {
-            ErrorView {
+            ErrorScreen {
                 newsSourcesViewModel.fetchNewsSources()
             }
         }
         is UIState.Loading -> {
-            LoadingView()
+            LoadingScreen()
         }
     }
 }

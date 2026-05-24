@@ -21,51 +21,46 @@ class TopHeadlineRepositoryTest {
     @Mock
     private lateinit var networkService: NetworkService
 
-    private lateinit var topHeadlineRepository: TopHeadlineRepository
+    private lateinit var repository: TopHeadlineRepository
 
     @Before
     fun setup() {
-        topHeadlineRepository = TopHeadlineRepository(networkService)
+        repository = TopHeadlineRepository(networkService)
     }
 
     @Test
-    fun getTopHeadline_whenResponse200_shouldReturnListOfArticles() {
-        runTest {
-            val source = Source(
-                id = "id",
-                name = "name"
-            )
-            val article = Articles(
-                source = source,
-                title = "title",
-                description = "description",
-                url = "url",
-                urlToImage = "urlToImage"
-            )
+    fun `getTopHeadline returns articles on successful response`() = runTest {
+        val articles = listOf(createDummyArticle())
 
-            val articles = mutableListOf<Articles>()
-            articles.add(article)
+        val response = TopHeadlineResponse(
+            status = "ok",
+            totalResults = articles.size,
+            articles = articles
+        )
 
-            val response = TopHeadlineResponse(
-                status = "ok",
-                totalResults = 1,
-                articles = articles
-            )
+        Mockito.doReturn(response).`when`(networkService).getTopHeadline(AppUtils.COUNTRY)
 
-            Mockito.doReturn(response).`when`(networkService).getTopHeadline(AppUtils.COUNTRY)
-            val actual = topHeadlineRepository.getTopHeadline(AppUtils.COUNTRY).first()
-            assertEquals(response.articles, actual)
-        }
+        val result = repository.getTopHeadline(AppUtils.COUNTRY).first()
+
+        assertEquals(articles, result)
     }
 
     @Test
-    fun getTopHeadline_whenError_shouldThrowException() {
-        runTest {
-            Mockito.`when`(networkService.getTopHeadline(AppUtils.COUNTRY))
-                .thenThrow(RuntimeException("Error"))
-            val actual = topHeadlineRepository.getTopHeadline(AppUtils.COUNTRY).first()
-            println(actual)
-            assertEquals(emptyList<Articles>(), actual)
-        }
+    fun `getTopHeadline returns empty list on network error`() = runTest {
+        Mockito.doThrow(RuntimeException("Network error"))
+            .`when`(networkService).getTopHeadline(AppUtils.COUNTRY)
+
+        val result = repository.getTopHeadline(AppUtils.COUNTRY).first()
+
+        assertEquals(emptyList<Articles>(), result)
     }
 }
+
+// Helper function
+private fun createDummyArticle() = Articles(
+    source = Source(id = "1", name = "Test Source"),
+    title = "Test Title",
+    description = "Test Description",
+    url = "https://example.com",
+    urlToImage = "https://example.com/image.jpg"
+)

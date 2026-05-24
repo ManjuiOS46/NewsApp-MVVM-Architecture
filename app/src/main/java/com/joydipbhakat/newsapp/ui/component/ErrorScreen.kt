@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.joydipbhakat.newsapp.R
 
 @Composable
-fun ErrorView(onRetry: () -> Unit) {
+fun ErrorScreen(onRetry: () -> Unit) {
     Box(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
