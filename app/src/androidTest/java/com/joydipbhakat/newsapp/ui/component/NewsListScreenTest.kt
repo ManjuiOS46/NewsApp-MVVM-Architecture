@@ -2,8 +2,8 @@ package com.joydipbhakat.newsapp.ui.component
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.joydipbhakat.newsapp.data.models.Articles
-import com.joydipbhakat.newsapp.data.models.Source
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
+import com.joydipbhakat.newsapp.data.network.models.ApiSource
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -16,19 +16,19 @@ class NewsListScreenTest {
 
     @Test
     fun newsList_whenListOfArticleIsPresent_shouldShowListArticles(){
-        val articles = Articles(
+        val apiArticles = ApiArticles(
             title = "Breaking News",
             description = "Description",
             url = "https://google.com",
             urlToImage = "image",
-            source =
-            Source(
+            apiSource =
+            ApiSource(
                 id = "1",
                 name = "BBC"
             )
         )
         composeRule.setContent { 
-            NewsListScreen(data = listOf(articles))
+            NewsListScreen(data = listOf(apiArticles))
         }
         composeRule.onNodeWithText("Breaking News").assertIsDisplayed()
         composeRule.onNodeWithText("Description").assertIsDisplayed()
@@ -48,20 +48,20 @@ class NewsListScreenTest {
     fun newsListScreen_whenImageClick_shouldTriggerCallback()
     {
         var clickedUrl: String? = null
-        val articles = Articles(
+        val apiArticles = ApiArticles(
             title = "Breaking News",
             description = "Description",
             url = "https://google.com",
             urlToImage = "image",
-            source =
-            Source(
+            apiSource =
+            ApiSource(
                 id = "1",
                 name = "BBC"
             )
         )
         composeRule.setContent {
             NewsListScreen(
-                data = listOf(articles),
+                data = listOf(apiArticles),
 
                 onArticleClick = {
                     clickedUrl = it

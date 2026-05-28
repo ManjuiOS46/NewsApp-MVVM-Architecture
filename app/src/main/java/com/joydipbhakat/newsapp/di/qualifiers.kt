@@ -6,4 +6,8 @@ import javax.inject.Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class BaseUrl
 
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DatabaseName
+
 

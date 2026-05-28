@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.joydipbhakat.newsapp.R
-import com.joydipbhakat.newsapp.data.models.NewsInfo
+import com.joydipbhakat.newsapp.data.network.models.NewsInfo
 import com.joydipbhakat.newsapp.ui.newslist.NewsListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ActivityContext

@@ -1,9 +1,10 @@
 package com.joydipbhakat.newsapp.data.repository
 
-import com.joydipbhakat.newsapp.data.api.NetworkService
-import com.joydipbhakat.newsapp.data.models.Articles
-import com.joydipbhakat.newsapp.data.models.Source
-import com.joydipbhakat.newsapp.data.models.TopHeadlineResponse
+import com.joydipbhakat.newsapp.data.local.DatabaseService
+import com.joydipbhakat.newsapp.data.network.api.NetworkService
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
+import com.joydipbhakat.newsapp.data.network.models.ApiSource
+import com.joydipbhakat.newsapp.data.network.models.TopHeadlineResponse
 import com.joydipbhakat.newsapp.utils.AppUtils
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
@@ -21,11 +22,14 @@ class TopHeadlineRepositoryTest {
     @Mock
     private lateinit var networkService: NetworkService
 
+    @Mock
+    private lateinit var databaseService: DatabaseService
+
     private lateinit var repository: TopHeadlineRepository
 
     @Before
     fun setup() {
-        repository = TopHeadlineRepository(networkService)
+        repository = TopHeadlineRepository(networkService,databaseService)
     }
 
     @Test
@@ -52,13 +56,13 @@ class TopHeadlineRepositoryTest {
 
         val result = repository.getTopHeadline(AppUtils.COUNTRY).first()
 
-        assertEquals(emptyList<Articles>(), result)
+        assertEquals(emptyList<ApiArticles>(), result)
     }
 }
 
 // Helper function
-private fun createDummyArticle() = Articles(
-    source = Source(id = "1", name = "Test Source"),
+private fun createDummyArticle() = ApiArticles(
+    apiSource = ApiSource(id = "1", name = "Test Source"),
     title = "Test Title",
     description = "Test Description",
     url = "https://example.com",

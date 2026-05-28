@@ -3,7 +3,8 @@ package com.joydipbhakat.newsapp.ui.newslist
 import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.models.Articles
+import com.joydipbhakat.newsapp.data.local.entity.Article
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,11 +16,11 @@ import javax.inject.Inject
 class NewsListViewModel @Inject constructor(var topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
 
-    private var _uiStateForCountry = MutableStateFlow<UIState<List<Articles>>>(UIState.Loading)
-    val uiStateForCountry: StateFlow<UIState<List<Articles>>> = _uiStateForCountry
+    private var _uiStateForCountry = MutableStateFlow<UIState<List<ApiArticles>>>(UIState.Loading)
+    val uiStateForCountry: StateFlow<UIState<List<ApiArticles>>> = _uiStateForCountry
 
-    private var _uiStateForLanguage = MutableStateFlow<UIState<List<Articles>>>(UIState.Loading)
-    val uiStateForLanguage: StateFlow<UIState<List<Articles>>> = _uiStateForLanguage
+    private var _uiStateForLanguage = MutableStateFlow<UIState<List<ApiArticles>>>(UIState.Loading)
+    val uiStateForLanguage: StateFlow<UIState<List<ApiArticles>>> = _uiStateForLanguage
 
     fun getTopHeadlinesBasedOnCountry(code: String) {
         viewModelScope.launch {
@@ -40,7 +41,7 @@ class NewsListViewModel @Inject constructor(var topHeadlineRepository: TopHeadli
             topHeadlineRepository.getLanguageNews(firstLanguage)
                 .zip(topHeadlineRepository.getLanguageNews(secondLanguage))
                 { resultFromFirst, resultFromSecond ->
-                    val allLanguagesFromAPI = mutableListOf<Articles>()
+                    val allLanguagesFromAPI = mutableListOf<ApiArticles>()
                     allLanguagesFromAPI.addAll(resultFromFirst)
                     allLanguagesFromAPI.addAll(resultFromSecond)
                     return@zip allLanguagesFromAPI

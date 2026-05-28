@@ -1,6 +1,5 @@
 package com.joydipbhakat.newsapp.ui.component
 
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -18,11 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.joydipbhakat.newsapp.data.network.models.ApiArticles
+import com.joydipbhakat.newsapp.data.local.entity.Article
+
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun NewsListScreen(data: List<ApiArticles>, onArticleClick: (String?) -> Unit = {}) {
+fun OfflineNewsListScreen(data: List<Article>, onArticleClick: (String?) -> Unit = {}) {
     LazyColumn {
         items(data) { item ->
             Column {
@@ -38,7 +38,7 @@ fun NewsListScreen(data: List<ApiArticles>, onArticleClick: (String?) -> Unit = 
                     contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = item.title.toString(),
+                    text = item.title ?: "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
@@ -48,7 +48,7 @@ fun NewsListScreen(data: List<ApiArticles>, onArticleClick: (String?) -> Unit = 
                     fontSize = 16.sp
                 )
                 Text(
-                    text = item.description.toString(),
+                    text = item.description ?: "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
@@ -58,7 +58,7 @@ fun NewsListScreen(data: List<ApiArticles>, onArticleClick: (String?) -> Unit = 
                     fontSize = 12.sp
                 )
                 Text(
-                    text = item.apiSource?.name.toString(),
+                    text = item.source.name,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),

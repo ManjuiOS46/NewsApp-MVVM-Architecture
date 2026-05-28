@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.joydipbhakat.newsapp.R
-import com.joydipbhakat.newsapp.data.models.NewsSources
+import com.joydipbhakat.newsapp.data.network.models.NewsSources
 import com.joydipbhakat.newsapp.ui.component.ErrorScreen
 import com.joydipbhakat.newsapp.ui.component.LoadingScreen
 import dagger.hilt.android.AndroidEntryPoint

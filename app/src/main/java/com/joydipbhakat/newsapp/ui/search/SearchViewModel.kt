@@ -3,7 +3,7 @@ package com.joydipbhakat.newsapp.ui.search
 import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.models.Articles
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,8 +16,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
 
-    private val _uiState = MutableStateFlow<UIState<Flow<List<Articles>>>>(UIState.Loading)
-    val uiState: StateFlow<UIState<Flow<List<Articles>>>> = _uiState
+    private val _uiState = MutableStateFlow<UIState<Flow<List<ApiArticles>>>>(UIState.Loading)
+    val uiState: StateFlow<UIState<Flow<List<ApiArticles>>>> = _uiState
 
     private val _query = MutableStateFlow("")
     private val query: StateFlow<String> = _query

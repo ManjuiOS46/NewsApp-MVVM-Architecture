@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.data.models
+package com.joydipbhakat.newsapp.data.network.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

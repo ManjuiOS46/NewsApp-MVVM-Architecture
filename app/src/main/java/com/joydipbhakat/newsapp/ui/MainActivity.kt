@@ -20,6 +20,7 @@ import com.joydipbhakat.newsapp.R
 import com.joydipbhakat.newsapp.ui.countries.CountriesActivity
 import com.joydipbhakat.newsapp.ui.language.LanguageActivity
 import com.joydipbhakat.newsapp.ui.newssources.NewsSourcesActivity
+import com.joydipbhakat.newsapp.ui.offlinearticles.OfflineArticlesActivity
 import com.joydipbhakat.newsapp.ui.search.SearchActivity
 import com.joydipbhakat.newsapp.ui.theme.NewsTheme
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineActivity
@@ -48,10 +49,21 @@ class MainActivity : ComponentActivity() {
     fun NewsApp() {
         Column(modifier = Modifier.padding(top = 132.dp)) {
             Button(
-                onClick = { startActivity(Intent(context, TopHeadlineActivity::class.java)) },
+                onClick = { startActivity(Intent(context, OfflineArticlesActivity::class.java)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp, top = 100.dp),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color(0xFF03DAC5) // teal_200
+                )
+            ) {
+                Text(text = stringResource(id = R.string.offline_articles))
+            }
+            Button(
+                onClick = { startActivity(Intent(context, TopHeadlineActivity::class.java)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, end = 32.dp, top = 24.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color(0xFF03DAC5) // teal_200
                 )

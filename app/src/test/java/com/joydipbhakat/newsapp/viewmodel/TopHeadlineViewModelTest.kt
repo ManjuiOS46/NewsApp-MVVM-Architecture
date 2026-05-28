@@ -1,8 +1,8 @@
 package com.joydipbhakat.newsapp.viewmodel
 
 import app.cash.turbine.test
-import com.joydipbhakat.newsapp.data.models.Articles
-import com.joydipbhakat.newsapp.data.models.Source
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
+import com.joydipbhakat.newsapp.data.network.models.ApiSource
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import com.joydipbhakat.newsapp.ui.UIState
 import com.joydipbhakat.newsapp.ui.topheadline.TopHeadlineViewModel
@@ -32,12 +32,12 @@ class TopHeadlineViewModelTest {
     @Test
     fun fetchNews_whenRepositoryResponseSuccess_shouldReturnListArticles() {
 
-        val source = Source(
+        val apiSource = ApiSource(
             id = "id",
             name = "name"
         )
-        val articles = Articles(
-            source = source,
+        val apiArticles = ApiArticles(
+            apiSource = apiSource,
             title = "title",
             description = "description",
             url = "url",
@@ -45,13 +45,13 @@ class TopHeadlineViewModelTest {
         )
         runTest {
 
-            doReturn(flowOf(listOf(articles)))
+            doReturn(flowOf(listOf(apiArticles)))
                 .`when`(topHeadlineRepository)
                 .getTopHeadline(COUNTRY)
 
             val viewModel = TopHeadlineViewModel(topHeadlineRepository, dispatcherProvider)
             viewModel.uiState.test {
-                assertEquals(UIState.Success(listOf(articles)), awaitItem())
+                assertEquals(UIState.Success(listOf(apiArticles)), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -60,7 +60,7 @@ class TopHeadlineViewModelTest {
     @Test
     fun fetchNews_whenRepositoryResponseIsError_shouldThrowException() {
         runTest {
-            doReturn(flow<List<Articles>> { throw Exception("(Error occurred due to some reason") })
+            doReturn(flow<List<ApiArticles>> { throw Exception("(Error occurred due to some reason") })
                 .`when`(topHeadlineRepository)
                 .getTopHeadline(COUNTRY)
             val viewModel = TopHeadlineViewModel(topHeadlineRepository, dispatcherProvider)

@@ -10,7 +10,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.joydipbhakat.newsapp.data.models.NewsInfo
+import com.joydipbhakat.newsapp.data.network.models.NewsInfo
 import com.joydipbhakat.newsapp.ui.component.ErrorScreen
 import com.joydipbhakat.newsapp.ui.component.LoadingScreen
 import com.joydipbhakat.newsapp.ui.component.NewsListScreen

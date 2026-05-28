@@ -3,7 +3,7 @@ package com.joydipbhakat.newsapp.ui.newssources
 import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.models.NewsSources
+import com.joydipbhakat.newsapp.data.network.models.NewsSources
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

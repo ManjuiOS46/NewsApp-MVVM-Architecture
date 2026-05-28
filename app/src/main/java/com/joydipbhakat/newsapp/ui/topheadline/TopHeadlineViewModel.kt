@@ -4,7 +4,8 @@ package com.joydipbhakat.newsapp.ui.topheadline
 import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.models.Articles
+import com.joydipbhakat.newsapp.data.local.entity.Article
+import com.joydipbhakat.newsapp.data.network.models.ApiArticles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import com.joydipbhakat.newsapp.utils.AppUtils
 import com.joydipbhakat.newsapp.utils.DispatcherProvider
@@ -23,8 +24,8 @@ class TopHeadlineViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private var _uiState = MutableStateFlow<UIState<List<Articles>>>(UIState.Loading)
-    val uiState: StateFlow<UIState<List<Articles>>> = _uiState
+    private var _uiState = MutableStateFlow<UIState<List<ApiArticles>>>(UIState.Loading)
+    val uiState: StateFlow<UIState<List<ApiArticles>>> = _uiState
 
     init {
         fetchNews()

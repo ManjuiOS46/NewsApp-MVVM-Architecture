@@ -1,4 +1,4 @@
-package com.joydipbhakat.newsapp.data.models
+package com.joydipbhakat.newsapp.data.network.models
 
 import com.google.gson.annotations.SerializedName
 
