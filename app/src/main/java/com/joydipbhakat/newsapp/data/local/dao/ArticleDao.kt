@@ -1,5 +1,6 @@
 package com.joydipbhakat.newsapp.data.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.joydipbhakat.newsapp.data.local.entity.Article
 
@@ -8,6 +9,9 @@ interface ArticleDao {
 
     @Query("SELECT * FROM article")
     fun getAllArticle(): List<Article>
+
+    @Query("SELECT * FROM article")
+    fun getAllArticleForPagination(): PagingSource<Int, Article>
 
     @Query("DELETE FROM article")
     fun deleteAll()

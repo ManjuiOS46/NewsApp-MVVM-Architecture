@@ -10,6 +10,10 @@ import javax.inject.Singleton
 @Singleton
 interface NetworkService {
 
+    @GET("top-headlines?q=us & pageSize=20")
+    suspend fun getTopHeadlinePagination(
+        @Query("page") page: Int
+    ): TopHeadlineResponse
     @GET("top-headlines")
     suspend fun getTopHeadline(
         @Query("country") country: String

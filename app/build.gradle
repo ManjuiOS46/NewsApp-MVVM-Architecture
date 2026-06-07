@@ -122,6 +122,7 @@ dependencies {
 
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-paging:$room_version")
 
     kapt("androidx.room:room-compiler:$room_version")
 
@@ -130,4 +131,8 @@ dependencies {
     //Worker
     def work_version = "2.9.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    //Paging 3
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha17")
 }
