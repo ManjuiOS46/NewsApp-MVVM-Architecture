@@ -1,42 +1,24 @@
 package com.joydipbhakat.newsapp.ui.search
 
-import android.content.Context
 import android.net.Uri
-import com.joydipbhakat.newsapp.ui.UIState
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.joydipbhakat.newsapp.R
+import com.joydipbhakat.newsapp.ui.UIState
 import com.joydipbhakat.newsapp.ui.component.ErrorScreen
 import com.joydipbhakat.newsapp.ui.component.LoadingScreen
 import com.joydipbhakat.newsapp.ui.component.NewsListScreen
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ActivityContext
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class SearchActivity : ComponentActivity() {
-    @Inject
-    @ActivityContext
-    lateinit var context: Context
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ShowSearchPage(context)
-        }
-    }
-}
 
 @Composable
-private fun ShowSearchPage(context: Context) {
+fun SearchScreen() {
     var text by remember { mutableStateOf("") }
     val searchViewModel: SearchViewModel = hiltViewModel()
     Column {
@@ -45,12 +27,13 @@ private fun ShowSearchPage(context: Context) {
             onTextChange = { text = it },
             searchViewModel
         )
-        SearchScreen(text, searchViewModel, context)
+        SearchScreenWithNews(text, searchViewModel)
     }
 }
 
 @Composable
-private fun SearchScreen(text: String, searchViewModel: SearchViewModel, context: Context) {
+private fun SearchScreenWithNews(text: String, searchViewModel: SearchViewModel) {
+    val context = LocalContext.current
     when (val uiState = searchViewModel.uiState.collectAsState().value) {
         is UIState.Success -> {
             val newsList = uiState.data.collectAsState(initial = emptyList())

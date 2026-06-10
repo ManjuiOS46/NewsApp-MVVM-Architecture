@@ -1,5 +1,7 @@
 package com.joydipbhakat.newsapp.data.repository
 
+import android.content.Context
+import com.google.gson.Gson
 import com.joydipbhakat.newsapp.data.local.DatabaseService
 import com.joydipbhakat.newsapp.data.network.api.NetworkService
 import com.joydipbhakat.newsapp.data.network.models.ApiArticles
@@ -25,11 +27,17 @@ class TopHeadlineRepositoryTest {
     @Mock
     private lateinit var databaseService: DatabaseService
 
+    @Mock
+    private lateinit var context: Context
+
+    @Mock
+    private lateinit var gson: Gson
+
     private lateinit var repository: TopHeadlineRepository
 
     @Before
     fun setup() {
-        repository = TopHeadlineRepository(networkService,databaseService)
+        repository = TopHeadlineRepository(networkService,databaseService,context,gson)
     }
 
     @Test
@@ -60,7 +68,6 @@ class TopHeadlineRepositoryTest {
     }
 }
 
-// Helper function
 private fun createDummyArticle() = ApiArticles(
     apiSource = ApiSource(id = "1", name = "Test Source"),
     title = "Test Title",

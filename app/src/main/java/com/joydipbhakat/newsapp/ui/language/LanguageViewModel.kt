@@ -1,11 +1,10 @@
-package com.joydipbhakat.newsapp.ui.newslist
+package com.joydipbhakat.newsapp.ui.language
 
-import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.local.entity.Article
 import com.joydipbhakat.newsapp.data.network.models.ApiArticles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
+import com.joydipbhakat.newsapp.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -13,24 +12,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsListViewModel @Inject constructor(var topHeadlineRepository: TopHeadlineRepository) :
+class LanguageViewModel @Inject constructor(val topHeadlineRepository: TopHeadlineRepository) :
     ViewModel() {
+    private val _languages =
+        MutableStateFlow<List<Pair<String, String>>>(emptyList())
 
-    private var _uiStateForCountry = MutableStateFlow<UIState<List<ApiArticles>>>(UIState.Loading)
-    val uiStateForCountry: StateFlow<UIState<List<ApiArticles>>> = _uiStateForCountry
+    val languages = _languages.asStateFlow()
 
     private var _uiStateForLanguage = MutableStateFlow<UIState<List<ApiArticles>>>(UIState.Loading)
     val uiStateForLanguage: StateFlow<UIState<List<ApiArticles>>> = _uiStateForLanguage
 
-    fun getTopHeadlinesBasedOnCountry(code: String) {
-        viewModelScope.launch {
-            _uiStateForCountry.value = UIState.Loading
-            try {
-                topHeadlineRepository.getTopHeadline(code).collect {
-                    _uiStateForCountry.value = UIState.Success(it)
-                }
-            } catch (e: java.lang.Exception) {
-                _uiStateForCountry.value = UIState.Error("Error occurred while obtaining required data")
+    init {
+        loadLanguages()
+    }
+
+    private fun loadLanguages() {
+        viewModelScope.launch(Dispatchers.Main) {
+            topHeadlineRepository.getLanguages().flowOn(Dispatchers.IO).collect {
+                _languages.value = it
             }
         }
     }

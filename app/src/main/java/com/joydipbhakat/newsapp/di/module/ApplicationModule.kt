@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.joydipbhakat.newsapp.data.network.api.NetworkService
 import com.joydipbhakat.newsapp.di.BaseUrl
-import com.joydipbhakat.newsapp.ApiKeyInterceptor
+import com.joydipbhakat.newsapp.data.network.api.ApiKeyInterceptor
 import com.joydipbhakat.newsapp.data.local.AppDatabase
 import com.joydipbhakat.newsapp.data.local.AppDatabaseService
 import com.joydipbhakat.newsapp.data.local.DatabaseService
@@ -31,8 +31,7 @@ class ApplicationModule {
 
     @Provides
     @BaseUrl
-    fun provideBaseUrl():String
-    {
+    fun provideBaseUrl(): String {
         return "https://newsapi.org/v2/"
     }
 
@@ -58,19 +57,19 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideNetworkService(
-           okHttpClient: OkHttpClient,
-           @BaseUrl baseUrl: String,
-           gson: Gson
-       ): NetworkService =
-           Retrofit.Builder()
-               .client(okHttpClient)
-               .baseUrl(baseUrl)
-               .addConverterFactory(GsonConverterFactory.create(gson))
-               .build().create(NetworkService::class.java)
+        okHttpClient: OkHttpClient,
+        @BaseUrl baseUrl: String,
+        gson: Gson
+    ): NetworkService =
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build().create(NetworkService::class.java)
 
     @Provides
     @Singleton
-    fun provideDefaultDispatcher():DispatcherProvider = DefaultDispatcher()
+    fun provideDefaultDispatcher(): DispatcherProvider = DefaultDispatcher()
 
 
     @Provides
@@ -89,12 +88,13 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseService(appDatabase: AppDatabase):DatabaseService {
+    fun provideDatabaseService(appDatabase: AppDatabase): DatabaseService {
         return AppDatabaseService(appDatabase)
     }
 
     @Provides
     @Singleton
-    fun provideNetworkHelper(@ApplicationContext context: Context):NetworkHelper = DefaultNetworkHelper(context)
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper =
+        DefaultNetworkHelper(context)
 
 }

@@ -1,10 +1,6 @@
 package com.joydipbhakat.newsapp.ui.newssources
 
-import com.joydipbhakat.newsapp.ui.UIState
 import android.net.Uri
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,23 +21,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.joydipbhakat.newsapp.R
 import com.joydipbhakat.newsapp.data.network.models.NewsSources
+import com.joydipbhakat.newsapp.ui.UIState
 import com.joydipbhakat.newsapp.ui.component.ErrorScreen
 import com.joydipbhakat.newsapp.ui.component.LoadingScreen
-import dagger.hilt.android.AndroidEntryPoint
 
 
-@AndroidEntryPoint
-class NewsSourcesActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            NewsSourcesScreen()
-        }
-    }
-}
 @Composable
-private fun NewsSourcesScreen() {
+fun NewsSourcesScreen() {
     val newsSourcesViewModel: NewsSourcesViewModel = hiltViewModel()
     when (val uiState = newsSourcesViewModel.uiState.collectAsState().value) {
         is UIState.Success -> {
