@@ -53,7 +53,7 @@ fun ArticleItem(
         )
 
         Text(
-            text = article.source.name,
+            text = article.source.name ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)

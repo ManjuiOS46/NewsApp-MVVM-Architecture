@@ -39,8 +39,7 @@ fun CountriesScreen() {
         }
         CountryNewsScreen(
             countryCode = selectedCountry,
-            viewModel = viewModel,
-            onBack = { viewModel.clearSelectedCountry() }
+            viewModel = viewModel
         )
     } else {
         CountryListScreen(
@@ -67,12 +66,13 @@ private fun CountryListScreen(
                     Button(
                         onClick = { onCountryClick(item.code) },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
+                            .fillMaxHeight()
+                            .width(250.dp)
+                            .padding(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = colorResource(id = R.color.purple_200)
                         ),
-                        shape = RectangleShape
+                        shape = RectangleShape,
                     ) {
                         Text(text = item.name)
                     }
@@ -85,8 +85,7 @@ private fun CountryListScreen(
 @Composable
 private fun CountryNewsScreen(
     countryCode: String,
-    viewModel: CountriesViewModel,
-    onBack: () -> Unit
+    viewModel: CountriesViewModel
 ) {
     val context = LocalContext.current
 

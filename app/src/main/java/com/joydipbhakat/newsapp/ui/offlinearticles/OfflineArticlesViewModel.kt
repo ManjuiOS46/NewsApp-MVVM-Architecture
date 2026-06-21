@@ -1,6 +1,5 @@
 package com.joydipbhakat.newsapp.ui.offlinearticles
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.joydipbhakat.newsapp.data.local.entity.Article
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class OfflineArticlesViewModel @Inject constructor(
     private val topHeadlineRepository: TopHeadlineRepository,
     private val dispatcherProvider: DispatcherProvider,
-    private val networkHelper: NetworkHelper
+    networkHelper: NetworkHelper
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow<UIState<List<Article>>>(UIState.Loading)
@@ -33,7 +32,6 @@ class OfflineArticlesViewModel @Inject constructor(
      fun fetchArticles() {
         viewModelScope.launch(dispatcherProvider.dispatcherMain) {
             topHeadlineRepository.getArticles("us").flowOn(dispatcherProvider.dispatcherIO).catch {
-                Log.i("Hi","Error is coming")
                 _uiState.value = UIState.Error("Error occurred due to some reason")
             }.collect {
                 _uiState.value = UIState.Success(it)

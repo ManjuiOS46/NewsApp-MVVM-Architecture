@@ -58,7 +58,7 @@ fun OfflineNewsListScreen(data: List<Article>, onArticleClick: (String?) -> Unit
                     fontSize = 12.sp
                 )
                 Text(
-                    text = item.source.name,
+                    text = item.source.name ?: "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),

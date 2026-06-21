@@ -24,7 +24,7 @@ class ArticleUpdateWorker @AssistedInject constructor(
             val networkNews = networkService.getTopHeadline("us").articles.map {
                 it.toArticleEntity()
             }
-            val databaseNews = databaseService.clearAndInsert(networkNews)
+            databaseService.clearAndInsert(networkNews)
             schedule(applicationContext)
             Result.success()
         } catch (e: Exception) {

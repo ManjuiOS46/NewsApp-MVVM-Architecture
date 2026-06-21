@@ -25,7 +25,7 @@ fun ApiArticleItem(
     Column {
         GlideImage(
             model = article.urlToImage,
-            contentDescription = null,
+            contentDescription = "androidContent",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(16f / 9f)
@@ -36,7 +36,7 @@ fun ApiArticleItem(
         )
 
         Text(
-            text = article.title,
+            text = article.title ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -45,7 +45,7 @@ fun ApiArticleItem(
         )
 
         Text(
-            text = article.description,
+            text = article.description ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -54,7 +54,7 @@ fun ApiArticleItem(
         )
 
         Text(
-            text = article.apiSource.name,
+            text = article.apiSource?.name ?: "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)

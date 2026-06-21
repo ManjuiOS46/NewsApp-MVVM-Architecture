@@ -4,7 +4,6 @@ package com.joydipbhakat.newsapp.ui.topheadline
 import com.joydipbhakat.newsapp.ui.UIState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.joydipbhakat.newsapp.data.local.entity.Article
 import com.joydipbhakat.newsapp.data.network.models.ApiArticles
 import com.joydipbhakat.newsapp.data.repository.TopHeadlineRepository
 import com.joydipbhakat.newsapp.utils.AppUtils

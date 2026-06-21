@@ -7,7 +7,7 @@ data class ApiSource(
     @SerializedName("id")
     var id: String? = null,
     @SerializedName("name")
-    var name: String = ""
+    var name: String? = null
 )
 
 fun ApiSource.toSourceEntity(): Source {

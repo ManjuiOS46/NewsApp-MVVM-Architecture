@@ -34,26 +34,29 @@ fun SearchScreen() {
 @Composable
 private fun SearchScreenWithNews(text: String, searchViewModel: SearchViewModel) {
     val context = LocalContext.current
-    when (val uiState = searchViewModel.uiState.collectAsState().value) {
-        is UIState.Success -> {
-            val newsList = uiState.data.collectAsState(initial = emptyList())
-            NewsListScreen(data = newsList.value){ url ->
-                CustomTabsIntent.Builder()
-                    .setShowTitle(true)
-                    .build()
-                    .launchUrl(
-                        context,
-                        Uri.parse(url)
-                    )
+    if(text.isNotEmpty())
+    {
+        when (val uiState = searchViewModel.uiState.collectAsState().value) {
+            is UIState.Success -> {
+                val newsList = uiState.data.collectAsState(initial = emptyList())
+                NewsListScreen(data = newsList.value){ url ->
+                    CustomTabsIntent.Builder()
+                        .setShowTitle(true)
+                        .build()
+                        .launchUrl(
+                            context,
+                            Uri.parse(url)
+                        )
+                }
             }
-        }
-        is UIState.Error -> {
-            ErrorScreen {
-                searchViewModel.newsSearch(text)
+            is UIState.Error -> {
+                ErrorScreen {
+                    searchViewModel.newsSearch(text)
+                }
             }
-        }
-        is UIState.Loading -> {
-            LoadingScreen()
+            is UIState.Loading -> {
+                LoadingScreen()
+            }
         }
     }
 }
